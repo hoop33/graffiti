@@ -2,13 +2,30 @@
 {% block content %}
   <div class="jumbotron">
     <h1>Welcome to graffiti</h1>
-    <p>Time to start building your site!</p>
-    <p><a class="btn btn-primary btn-lg" href="http://luminusweb.net">Learn more &raquo;</a></p>
   </div>
+
+  {% if error %}
+  <p class="error">{{error}}</p>
+  {% endif %}
 
   <div class="row-fluid">
     <div class="span8">
-    {{content|safe}}
+      <ul>
+        {% for post in posts %}
+        <li>
+          <span class="graffiti">{{post.text}}</span>
+          <time>{{post.created_at|date:"MM-dd-yyyy HH:mm:ss"}}</time>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
+
+  <form action="/" method="POST">
+    <p>
+      Text:
+      <input type="text" name="text" value="{{text}}" maxlength="255">
+      <input type="submit" value="Spray">
+    </p>
+  </form>
 {% endblock %}

@@ -5,20 +5,13 @@
 
 (defdb db schema/db-spec)
 
-(defentity users)
+(defentity posts)
 
-(defn create-user [user]
-  (insert users
-          (values user)))
+(defn create-post [text]
+  (insert posts
+          (values {:text text
+                   :created_at (new java.util.Date)})))
 
-(defn update-user [id first-name last-name email]
-  (update users
-  (set-fields {:first_name first-name
-               :last_name last-name
-               :email email})
-  (where {:id id})))
+(defn get-posts []
+  (select posts))
 
-(defn get-user [id]
-  (first (select users
-                 (where {:id id})
-                 (limit 1))))

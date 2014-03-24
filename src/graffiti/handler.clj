@@ -7,6 +7,7 @@
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.rotor :as rotor]
             [selmer.parser :as parser]
+            [graffiti.models.schema :as schema]
             [environ.core :refer [env]]))
 
 (defroutes app-routes
@@ -30,6 +31,9 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "graffiti.log" :max-size (* 512 1024) :backlog 10})
+
+  ;;intialize the database
+  (if-not (schema/initialized?) (schema/create-tables))
 
   (if (env :dev) (parser/cache-off!))
   (timbre/info "graffiti started successfully"))
